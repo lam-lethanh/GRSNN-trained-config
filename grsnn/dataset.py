@@ -394,7 +394,7 @@ class MyToyGraphInductive(InductiveKnowledgeGraphDataset):
         self.load_inductive_tsvs(train_files, test_files, verbose=verbose)
 
 @R.register("datasets.MyToyGraph")
-class MyToyGraph(KnowledgeGraphDataset):
+class MyToyGraph(data.KnowledgeGraphDataset):
 
     urls = [
         "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/train.txt",
