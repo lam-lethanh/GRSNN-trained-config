@@ -201,7 +201,7 @@ class FB15k237Inductive(InductiveKnowledgeGraphDataset):
             save_file = "fb15k237_%s_ind_%s" % (version, os.path.basename(url))
             txt_file = os.path.join(path, save_file)
             if not os.path.exists(txt_file):
-                txt_file = utils.download(url, self.path, save_file=save_file)
+                # txt_file = utils.download(url, self.path, save_file=save_file)
             test_files.append(txt_file)
 
         self.load_inductive_tsvs(train_files, test_files, verbose=verbose)
