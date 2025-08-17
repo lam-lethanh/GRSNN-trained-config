@@ -1,0 +1,2 @@
+Dave     friend    Frank
+Frank    likes     Pizza
