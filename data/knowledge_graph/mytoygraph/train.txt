@@ -1,4 +1,0 @@
-Alice    friend    Bob
-Bob      friend    Carol
-Alice    likes     Pizza
-Carol    likes     Pasta
