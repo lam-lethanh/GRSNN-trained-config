@@ -1,0 +1,2 @@
+Alice    friend    Carol
+Bob      likes     Pizza
