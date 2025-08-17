@@ -394,7 +394,7 @@ class MyToyGraphInductive(InductiveKnowledgeGraphDataset):
         self.load_inductive_tsvs(train_files, test_files, verbose=verbose)
 
 @R.register("datasets.MyToyGraph")
-class MyToyGraph(KnowledgeGraphDataset):
+class MyToyGraph(data.KnowledgeGraphDataset):
 
     def __init__(self, path="./datasets/mytoygraph/", verbose=1):
         path = os.path.expanduser(path)
