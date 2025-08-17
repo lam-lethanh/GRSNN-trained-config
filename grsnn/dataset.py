@@ -192,17 +192,17 @@ class FB15k237Inductive(InductiveKnowledgeGraphDataset):
             url = url % version
             save_file = "fb15k237_%s_%s" % (version, os.path.basename(url))
             txt_file = os.path.join(path, save_file)
-            if not os.path.exists(txt_file):
-                # txt_file = utils.download(url, self.path, save_file=save_file)
-            train_files.append(txt_file)
+            # if not os.path.exists(txt_file):
+            #     txt_file = utils.download(url, self.path, save_file=save_file)
+            train_files.append("experiments/KnowledgeGraphCompletionSNN/FB15k237/GRSNN/2025-08-13-11-27-53/datasets/knowledge_graphs/fb15k237_train.txt")
         test_files = []
         for url in self.test_urls:
             url = url % version
             save_file = "fb15k237_%s_ind_%s" % (version, os.path.basename(url))
             txt_file = os.path.join(path, save_file)
             if not os.path.exists(txt_file):
-                # txt_file = utils.download(url, self.path, save_file=save_file)
-            test_files.append(txt_file)
+                txt_file = utils.download(url, self.path, save_file=save_file)
+            test_files.append("experiments/KnowledgeGraphCompletionSNN/FB15k237/GRSNN/2025-08-13-11-27-53/datasets/knowledge_graphs/fb15k237_test.txt")
 
         self.load_inductive_tsvs(train_files, test_files, verbose=verbose)
 
