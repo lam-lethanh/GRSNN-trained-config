@@ -353,31 +353,40 @@ class OGBLBioKG(data.KnowledgeGraphDataset):
             neg_offset += num_sample_with_neg
         return splits
 
-@R.register("datasets.MyToyGraph")
-class MyToyGraph(datasets.KnowledgeGraphDataset):
-    urls = {
-        "train": "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/FB15k237/train.txt",
-        "valid": "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/FB15k237/valid.txt",
-        "test":  "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/FB15k237/test.txt",
-    }
+@R.register("datasets.MyToyGraphInductive")
+class MyToyGraphInductive(InductiveKnowledgeGraphDataset):
 
-    def __init__(self, path="./datasets/mytoygraph/", verbose=1):
+    train_urls = [
+        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/MyToyGraph/train.txt",
+        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/MyToyGraph/valid.txt",
+    ]
+
+    test_urls = [
+        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/MyToyGraph/test.txt",
+    ]
+
+    def __init__(self, path="./datasets/mytoygraph/", version="v1", verbose=1):
         path = os.path.expanduser(path)
         if not os.path.exists(path):
             os.makedirs(path)
         self.path = path
 
-        # check local files
-        files = {}
-        for split, url in self.urls.items():
-            file_path = os.path.join(path, f"{split}.txt")
-            if not os.path.exists(file_path):
-                # download nếu chưa có
-                save_file = f"{split}.txt"
-                file_path = utils.download(url, self.path, save_file=save_file)
-            files[split] = file_path
+        train_files = []
+        for url in self.train_urls:
+            url = url % version if "%s" in url else url
+            save_file = os.path.basename(url)
+            txt_file = os.path.join(path, save_file)
+            if not os.path.exists(txt_file):
+                txt_file = utils.download(url, self.path, save_file=save_file)
+            train_files.append(txt_file)
 
-        train_file, valid_file, test_file = files["train"], files["valid"], files["test"]
+        test_files = []
+        for url in self.test_urls:
+            url = url % version if "%s" in url else url
+            save_file = os.path.basename(url)
+            txt_file = os.path.join(path, save_file)
+            if not os.path.exists(txt_file):
+                txt_file = utils.download(url, self.path, save_file=save_file)
+            test_files.append(txt_file)
 
-        # load vào dataset knowledge graph chuẩn
-        self.load_files(train_file, valid_file, test_file, verbose=verbose)
+        self.load_inductive_tsvs(train_files, test_files, verbose=verbose)
