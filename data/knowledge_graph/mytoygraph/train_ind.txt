@@ -1,0 +1,5 @@
+victor	friend	wendy
+wendy	friend	xander
+xander	friend	yara
+yara	friend	zack
+zack	friend	alice

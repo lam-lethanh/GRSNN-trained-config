@@ -1,2 +1,10 @@
-alice	related_to	charlie
-bob	related_to	drama
+alice	colleague	eva
+bob	colleague	frank
+charlie	colleague	grace
+david	colleague	henry
+eva	colleague	irene
+frank	colleague	jack
+grace	colleague	karen
+henry	colleague	liam
+irene	colleague	mona
+jack	colleague	nick
