@@ -193,7 +193,7 @@ class FB15k237Inductive(InductiveKnowledgeGraphDataset):
             save_file = "fb15k237_%s_%s" % (version, os.path.basename(url))
             txt_file = os.path.join(path, save_file)
             if not os.path.exists(txt_file):
-                txt_file = utils.download(url, self.path, save_file=save_file)
+                # txt_file = utils.download(url, self.path, save_file=save_file)
             train_files.append(txt_file)
         test_files = []
         for url in self.test_urls:
