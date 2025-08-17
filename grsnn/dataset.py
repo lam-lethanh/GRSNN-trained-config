@@ -354,7 +354,7 @@ class OGBLBioKG(data.KnowledgeGraphDataset):
         return splits
 
 @R.register("datasets.MyToyGraphInductive")
-class MyToyGraphInductive(InductiveKnowledgeGraphDataset):
+class MyToyGraphInductive(data.KnowledgeGraphDataset):
 
     train_urls = [
     "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/train.txt",
