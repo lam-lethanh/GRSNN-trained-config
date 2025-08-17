@@ -1,0 +1,5 @@
+Alice friend_of Bob
+Bob friend_of Charlie
+Alice works_at CompanyX
+Charlie works_at CompanyY
+CompanyX has_part Part1
