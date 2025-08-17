@@ -1,0 +1,2 @@
+Carol    friend    Alice
+Bob      likes     Pasta
