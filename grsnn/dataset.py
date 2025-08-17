@@ -394,7 +394,7 @@ class MyToyGraphInductive(InductiveKnowledgeGraphDataset):
         self.load_inductive_tsvs(train_files, test_files, verbose=verbose)
 
 @R.register("datasets.MyToyGraph")
-class MyToyGraph(data.KnowledgeGraphDataset):
+class MyToyGraph(KnowledgeGraphDataset):
 
     urls = [
         "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/train.txt",
@@ -409,35 +409,35 @@ class MyToyGraph(data.KnowledgeGraphDataset):
             os.makedirs(path)
         self.path = path
 
-        files = []
+        # Tải các file và gộp dữ liệu vào một file tạm thời
+        temp_file = os.path.join(path, "temp_all_data.tsv")
+        all_data = []
         for url in self.urls:
             save_file = os.path.basename(url)
             txt_file = os.path.join(path, save_file)
             if not os.path.exists(txt_file):
                 txt_file = utils.download(url, self.path, save_file=save_file)
-            files.append(txt_file)
+            with open(txt_file, 'r') as f:
+                all_data.extend([line.strip() for line in f])
 
-        # Gộp tất cả file thành một tập dữ liệu duy nhất
-        all_data = []
-        for file in files:
-            with open(file, 'r') as f:
-                all_data.extend([line.strip().split('\t') for line in f])
+        # Ghi tất cả dữ liệu vào một file tạm
+        with open(temp_file, 'w') as f:
+            for line in all_data:
+                f.write(line + "\n")
 
-        # Gọi phương thức load_tsv để xử lý dữ liệu (thay vì load_inductive_tsvs)
-        self.load_tsv(all_data, verbose=verbose)
+        # Sử dụng load_tsv để đọc file tạm
+        self.load_tsv(temp_file, verbose=verbose)
 
-        # Tùy chọn: Tách thành train, valid, test nếu cần (dựa trên thứ tự file)
-        self.train, self.valid, self.test = self._split_data(all_data)
+        # Tùy chọn: Xóa file tạm sau khi load
+        os.remove(temp_file)
 
     def _split_data(self, all_data):
-        # Giả sử thứ tự file là train.txt, valid.txt, train_ind.txt, test_ind.txt
+        # Phân chia dữ liệu (nếu cần) sau khi load
         total_len = len(all_data)
-        train_end = len(all_data[:1])  # Chỉ lấy train.txt (11 triples)
-        valid_end = train_end + len(all_data[1:2])  # Thêm valid.txt (4 triples)
-        test_end = valid_end + len(all_data[2:4])  # Thêm train_ind.txt và test_ind.txt (12 triples)
+        train_end = len([line for line in all_data[:1].split('\n') if line])  # train.txt
+        valid_end = train_end + len([line for line in all_data[1:2].split('\n') if line])  # valid.txt
+        test_end = valid_end + len([line for line in all_data[2:4].split('\n') if line])  # train_ind.txt + test_ind.txt
 
-        train = all_data[:train_end]
-        valid = all_data[train_end:valid_end]
-        test = all_data[valid_end:test_end]
-
-        return train, valid, test
+        self.train = all_data[:train_end]
+        self.valid = all_data[train_end:valid_end]
+        self.test = all_data[valid_end:test_end]
