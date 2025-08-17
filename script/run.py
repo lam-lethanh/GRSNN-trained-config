@@ -2,7 +2,6 @@ import os
 import sys
 import math
 import pprint
-
 import torch
 
 from torchdrug import core
@@ -12,9 +11,15 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from grsnn import dataset, layer, model, task, util
 
 
-def train_and_validate(cfg, solver):
+def train_and_validate(cfg, solver, checkpoint=None):
+    # Nếu có checkpoint thì không train lại
+    if checkpoint is not None:
+        solver.load(checkpoint)
+        print(f"Loaded checkpoint from {checkpoint}")
+        return solver
+
     if cfg.train.num_epoch == 0:
-        return
+        return solver
 
     step = math.ceil(cfg.train.num_epoch / 10)
     best_result = float("-inf")
@@ -34,9 +39,6 @@ def train_and_validate(cfg, solver):
             best_epoch = solver.epoch
 
     solver.load("model_epoch_%d.pth" % best_epoch)
-    # if there is the bug for loading data.Graph, set remove_graph=True
-    # reference: https://github.com/DeepGraphLearning/torchdrug/issues/89
-    #solver.load("model_epoch_%d.pth" % best_epoch, remove_graph=True)
     return solver
 
 
@@ -62,5 +64,8 @@ if __name__ == "__main__":
     dataset = core.Configurable.load_config_dict(cfg.dataset)
     solver = util.build_solver(cfg, dataset)
 
-    train_and_validate(cfg, solver)
+    # load checkpoint nếu có
+    checkpoint = getattr(args, "checkpoint", None)
+    solver = train_and_validate(cfg, solver, checkpoint)
+
     test(cfg, solver)
