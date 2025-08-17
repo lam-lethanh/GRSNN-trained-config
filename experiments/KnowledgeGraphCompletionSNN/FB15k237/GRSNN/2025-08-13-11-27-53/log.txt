@@ -1,0 +1,392 @@
+11:27:53   Config file: config/knowledge_graph/fb15k237.yaml
+11:27:53   {'dataset': {'class': 'FB15k237', 'path': './datasets/knowledge_graphs/'},
+ 'engine': {'batch_size': 5, 'gpus': [0], 'gradient_interval': 6},
+ 'metric': 'mrr',
+ 'optimizer': {'class': 'Adam', 'lr': 0.002},
+ 'output_dir': './experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'class': 'KnowledgeGraphCompletionSNN',
+          'criterion': 'bce',
+          'model': {'Vth': 2.0,
+                    'boundary_query': True,
+                    'class': 'GRSNN',
+                    'delay_bound': 4.0,
+                    'dependent': True,
+                    'hidden_dim': 32,
+                    'input_dim': 32,
+                    'linear_scale': 0.1,
+                    'not_delay': False,
+                    'relation_weight': False,
+                    'remove_one_hop': True,
+                    'self_connection': False,
+                    'tau': 4.0,
+                    'temporal_decay_ratio': 0.95,
+                    'time_steps': 10},
+          'num_negative': 256,
+          'sample_weight': False,
+          'strict_negative': True},
+ 'train': {'num_epoch': 20}}
+11:27:53   Downloading https://github.com/DeepGraphLearning/KnowledgeGraphEmbedding/raw/master/data/FB15k-237/train.txt to ./datasets/knowledge_graphs/fb15k237_train.txt
+11:27:54   Downloading https://github.com/DeepGraphLearning/KnowledgeGraphEmbedding/raw/master/data/FB15k-237/valid.txt to ./datasets/knowledge_graphs/fb15k237_valid.txt
+11:27:55   Downloading https://github.com/DeepGraphLearning/KnowledgeGraphEmbedding/raw/master/data/FB15k-237/test.txt to ./datasets/knowledge_graphs/fb15k237_test.txt
+11:27:57   FB15k237(
+  #entity: 14541
+  #relation: 237
+  #triplet: 310116
+)
+11:27:57   #train: 272115, #valid: 17535, #test: 20466
+11:27:57   Preprocess training set
+11:27:59   {'amp_training': False,
+ 'batch_size': 5,
+ 'class': 'Engine',
+ 'gpus': [0],
+ 'gradient_interval': 6,
+ 'log_interval': 100,
+ 'logger': 'logging',
+ 'num_worker': 0,
+ 'optimizer': {'amsgrad': False,
+               'betas': (0.9, 0.999),
+               'class': 'optim.Adam',
+               'eps': 1e-08,
+               'lr': 0.002,
+               'weight_decay': 0},
+ 'scheduler': None,
+ 'task': {'adversarial_temperature': 0.5,
+          'class': 'tasks.KnowledgeGraphCompletionSNN',
+          'criterion': 'bce',
+          'fact_ratio': True,
+          'filtered_ranking': False,
+          'full_batch_eval': False,
+          'margin': 6,
+          'metric': ('mr', 'mrr', 'hits@1', 'hits@3', 'hits@10'),
+          'model': {'Vth': 2.0,
+                    'aggregate_func': 'sum',
+                    'boundary_query': True,
+                    'class': 'model.GRSNN',
+                    'concat_hidden': False,
+                    'delay_bound': 4.0,
+                    'dependent': True,
+                    'hidden_dim': 32,
+                    'input_dim': 32,
+                    'layer_norm': False,
+                    'linear_scale': 0.1,
+                    'm_regularization': 0.0,
+                    'not_delay': False,
+                    'num_beam': 10,
+                    'num_mlp_layer': 2,
+                    'num_relation': tensor(237),
+                    'path_topk': 10,
+                    'relation_weight': False,
+                    'remove_one_hop': True,
+                    'self_connection': False,
+                    'surrogate_function': 'sigmoid',
+                    'symmetric': False,
+                    'tau': 4.0,
+                    'tau_c': None,
+                    'temporal_decay_ratio': 0.95,
+                    'time_steps': 10},
+          'num_negative': 256,
+          'sample_weight': None,
+          'strict_negative': True},
+ 'test_set': {'class': 'dataset.Subset',
+              'dataset': {'class': 'datasets.FB15k237',
+                          'path': './datasets/knowledge_graphs/',
+                          'verbose': 1},
+              'indices': range(289650, 310116)},
+ 'train_set': {'class': 'dataset.Subset',
+               'dataset': {'class': 'datasets.FB15k237',
+                           'path': './datasets/knowledge_graphs/',
+                           'verbose': 1},
+               'indices': range(0, 272115)},
+ 'valid_set': {'class': 'dataset.Subset',
+               'dataset': {'class': 'datasets.FB15k237',
+                           'path': './datasets/knowledge_graphs/',
+                           'verbose': 1},
+               'indices': range(272115, 289650)}}
+11:27:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:27:59   Epoch 0 begin
+11:27:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:27:59   Epoch 0 end
+11:27:59   duration: 0.00 secs
+11:27:59   speed: 0.00 batch / sec
+11:27:59   ETA: 0.00 secs
+11:27:59   max GPU memory: 18.9 MiB
+11:27:59   ------------------------------
+11:27:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:27:59   Epoch 1 begin
+11:27:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:27:59   Epoch 1 end
+11:27:59   duration: 0.00 secs
+11:27:59   speed: 0.00 batch / sec
+11:27:59   ETA: 0.00 secs
+11:27:59   max GPU memory: 18.4 MiB
+11:27:59   ------------------------------
+11:27:59   Save checkpoint to model_epoch_2.pth
+11:27:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+11:27:59   Evaluate on valid
+12:19:03   ------------------------------
+12:19:03   hits@1: 0
+12:19:03   hits@10: 0.00490448
+12:19:03   hits@3: 0.00490448
+12:19:03   mr: 14469.5
+12:19:03   mrr: 0.00252067
+12:19:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:19:03   Epoch 2 begin
+12:19:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:19:03   Epoch 2 end
+12:19:03   duration: 51.06 mins
+12:19:03   speed: 0.00 batch / sec
+12:19:03   ETA: 51.06 mins
+12:19:03   max GPU memory: 4116.9 MiB
+12:19:03   ------------------------------
+12:19:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:19:03   Epoch 3 begin
+12:19:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:19:03   Epoch 3 end
+12:19:03   duration: 0.00 secs
+12:19:03   speed: 0.00 batch / sec
+12:19:03   ETA: 0.00 secs
+12:19:03   max GPU memory: 75.9 MiB
+12:19:03   ------------------------------
+12:19:03   Save checkpoint to model_epoch_4.pth
+12:19:03   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:19:03   Evaluate on valid
+13:10:01   ------------------------------
+13:10:01   hits@1: 0
+13:10:01   hits@10: 0.00490448
+13:10:01   hits@3: 0.00490448
+13:10:01   mr: 14469.5
+13:10:01   mrr: 0.00252067
+13:10:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:10:01   Epoch 4 begin
+13:10:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:10:01   Epoch 4 end
+13:10:01   duration: 50.96 mins
+13:10:01   speed: 0.00 batch / sec
+13:10:01   ETA: 50.96 mins
+13:10:01   max GPU memory: 4116.4 MiB
+13:10:01   ------------------------------
+13:10:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:10:01   Epoch 5 begin
+13:10:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:10:01   Epoch 5 end
+13:10:01   duration: 0.00 secs
+13:10:01   speed: 0.00 batch / sec
+13:10:01   ETA: 0.00 secs
+13:10:01   max GPU memory: 75.9 MiB
+13:10:01   ------------------------------
+13:10:01   Save checkpoint to model_epoch_6.pth
+13:10:01   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:10:01   Evaluate on valid
+14:01:02   ------------------------------
+14:01:02   hits@1: 0
+14:01:02   hits@10: 0.00490448
+14:01:02   hits@3: 0.00490448
+14:01:02   mr: 14469.5
+14:01:02   mrr: 0.00252067
+14:01:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:01:02   Epoch 6 begin
+14:01:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:01:02   Epoch 6 end
+14:01:02   duration: 51.01 mins
+14:01:02   speed: 0.00 batch / sec
+14:01:02   ETA: 51.01 mins
+14:01:02   max GPU memory: 4116.4 MiB
+14:01:02   ------------------------------
+14:01:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:01:02   Epoch 7 begin
+14:01:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:01:02   Epoch 7 end
+14:01:02   duration: 0.00 secs
+14:01:02   speed: 0.00 batch / sec
+14:01:02   ETA: 0.00 secs
+14:01:02   max GPU memory: 75.9 MiB
+14:01:02   ------------------------------
+14:01:02   Save checkpoint to model_epoch_8.pth
+14:01:02   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:01:02   Evaluate on valid
+14:51:58   ------------------------------
+14:51:58   hits@1: 0
+14:51:58   hits@10: 0.00490448
+14:51:58   hits@3: 0.00490448
+14:51:58   mr: 14469.5
+14:51:58   mrr: 0.00252067
+14:51:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:51:59   Epoch 8 begin
+14:51:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:51:59   Epoch 8 end
+14:51:59   duration: 50.95 mins
+14:51:59   speed: 0.00 batch / sec
+14:51:59   ETA: 50.95 mins
+14:51:59   max GPU memory: 4116.4 MiB
+14:51:59   ------------------------------
+14:51:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:51:59   Epoch 9 begin
+14:51:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:51:59   Epoch 9 end
+14:51:59   duration: 0.00 secs
+14:51:59   speed: 0.00 batch / sec
+14:51:59   ETA: 0.00 secs
+14:51:59   max GPU memory: 75.9 MiB
+14:51:59   ------------------------------
+14:51:59   Save checkpoint to model_epoch_10.pth
+14:51:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:51:59   Evaluate on valid
+15:42:58   ------------------------------
+15:42:58   hits@1: 0
+15:42:58   hits@10: 0.00490448
+15:42:58   hits@3: 0.00490448
+15:42:58   mr: 14469.5
+15:42:58   mrr: 0.00252067
+15:42:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:42:58   Epoch 10 begin
+15:42:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:42:58   Epoch 10 end
+15:42:58   duration: 50.99 mins
+15:42:58   speed: 0.00 batch / sec
+15:42:58   ETA: 50.99 mins
+15:42:58   max GPU memory: 4116.4 MiB
+15:42:58   ------------------------------
+15:42:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:42:58   Epoch 11 begin
+15:42:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:42:58   Epoch 11 end
+15:42:58   duration: 0.00 secs
+15:42:58   speed: 0.00 batch / sec
+15:42:58   ETA: 0.00 secs
+15:42:58   max GPU memory: 75.9 MiB
+15:42:58   ------------------------------
+15:42:58   Save checkpoint to model_epoch_12.pth
+15:42:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:42:58   Evaluate on valid
+16:33:52   ------------------------------
+16:33:52   hits@1: 0
+16:33:52   hits@10: 0.00490448
+16:33:52   hits@3: 0.00490448
+16:33:52   mr: 14469.5
+16:33:52   mrr: 0.00252067
+16:33:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:33:52   Epoch 12 begin
+16:33:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:33:52   Epoch 12 end
+16:33:52   duration: 50.90 mins
+16:33:52   speed: 0.00 batch / sec
+16:33:52   ETA: 50.90 mins
+16:33:52   max GPU memory: 4116.4 MiB
+16:33:52   ------------------------------
+16:33:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:33:52   Epoch 13 begin
+16:33:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:33:52   Epoch 13 end
+16:33:52   duration: 0.00 secs
+16:33:52   speed: 0.00 batch / sec
+16:33:52   ETA: 0.00 secs
+16:33:52   max GPU memory: 75.9 MiB
+16:33:52   ------------------------------
+16:33:52   Save checkpoint to model_epoch_14.pth
+16:33:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+16:33:52   Evaluate on valid
+17:24:45   ------------------------------
+17:24:45   hits@1: 0
+17:24:45   hits@10: 0.00490448
+17:24:45   hits@3: 0.00490448
+17:24:45   mr: 14469.5
+17:24:45   mrr: 0.00252067
+17:24:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:24:46   Epoch 14 begin
+17:24:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:24:46   Epoch 14 end
+17:24:46   duration: 50.89 mins
+17:24:46   speed: 0.00 batch / sec
+17:24:46   ETA: 50.89 mins
+17:24:46   max GPU memory: 4116.4 MiB
+17:24:46   ------------------------------
+17:24:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:24:46   Epoch 15 begin
+17:24:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:24:46   Epoch 15 end
+17:24:46   duration: 0.00 secs
+17:24:46   speed: 0.00 batch / sec
+17:24:46   ETA: 0.00 secs
+17:24:46   max GPU memory: 75.9 MiB
+17:24:46   ------------------------------
+17:24:46   Save checkpoint to model_epoch_16.pth
+17:24:46   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+17:24:46   Evaluate on valid
+18:15:39   ------------------------------
+18:15:39   hits@1: 0
+18:15:39   hits@10: 0.00490448
+18:15:39   hits@3: 0.00490448
+18:15:39   mr: 14469.5
+18:15:39   mrr: 0.00252067
+18:15:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:15:39   Epoch 16 begin
+18:15:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:15:39   Epoch 16 end
+18:15:39   duration: 50.89 mins
+18:15:39   speed: 0.00 batch / sec
+18:15:39   ETA: 50.89 mins
+18:15:39   max GPU memory: 4116.4 MiB
+18:15:39   ------------------------------
+18:15:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:15:39   Epoch 17 begin
+18:15:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:15:39   Epoch 17 end
+18:15:39   duration: 0.00 secs
+18:15:39   speed: 0.00 batch / sec
+18:15:39   ETA: 0.00 secs
+18:15:39   max GPU memory: 75.9 MiB
+18:15:39   ------------------------------
+18:15:39   Save checkpoint to model_epoch_18.pth
+18:15:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+18:15:39   Evaluate on valid
+19:06:34   ------------------------------
+19:06:34   hits@1: 0
+19:06:34   hits@10: 0.00490448
+19:06:34   hits@3: 0.00490448
+19:06:34   mr: 14469.5
+19:06:34   mrr: 0.00252067
+19:06:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:06:34   Epoch 18 begin
+19:06:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:06:34   Epoch 18 end
+19:06:34   duration: 50.91 mins
+19:06:34   speed: 0.00 batch / sec
+19:06:34   ETA: 50.91 mins
+19:06:34   max GPU memory: 4116.4 MiB
+19:06:34   ------------------------------
+19:06:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:06:34   Epoch 19 begin
+19:06:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:06:34   Epoch 19 end
+19:06:34   duration: 0.00 secs
+19:06:34   speed: 0.00 batch / sec
+19:06:34   ETA: 0.00 secs
+19:06:34   max GPU memory: 75.9 MiB
+19:06:34   ------------------------------
+19:06:34   Save checkpoint to model_epoch_20.pth
+19:06:34   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:06:34   Evaluate on valid
+19:57:29   ------------------------------
+19:57:29   hits@1: 0
+19:57:29   hits@10: 0.00490448
+19:57:29   hits@3: 0.00490448
+19:57:29   mr: 14469.5
+19:57:29   mrr: 0.00252067
+19:57:29   Load checkpoint from model_epoch_2.pth
+19:57:29   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+19:57:29   Evaluate on valid
+20:48:25   ------------------------------
+20:48:25   hits@1: 0
+20:48:25   hits@10: 0.00490448
+20:48:25   hits@3: 0.00490448
+20:48:25   mr: 14469.5
+20:48:25   mrr: 0.00252067
+20:48:25   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:48:25   Evaluate on test
+21:47:48   ------------------------------
+21:47:48   hits@1: 0
+21:47:48   hits@10: 0.00427538
+21:47:48   hits@3: 0.00427538
+21:47:48   mr: 14478.6
+21:47:48   mrr: 0.00220617
