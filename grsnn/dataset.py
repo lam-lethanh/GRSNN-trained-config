@@ -394,14 +394,7 @@ class MyToyGraphInductive(InductiveKnowledgeGraphDataset):
         self.load_inductive_tsvs(train_files, test_files, verbose=verbose)
 
 @R.register("datasets.MyToyGraph")
-class MyToyGraph(data.KnowledgeGraphDataset):
-
-    urls = [
-        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/train.txt",
-        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/valid.txt",
-        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/train_ind.txt",
-        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/test_ind.txt",
-    ]
+class MyToyGraph(KnowledgeGraphDataset):
 
     def __init__(self, path="./datasets/mytoygraph/", verbose=1):
         path = os.path.expanduser(path)
@@ -409,35 +402,91 @@ class MyToyGraph(data.KnowledgeGraphDataset):
             os.makedirs(path)
         self.path = path
 
-        # Tải các file và gộp dữ liệu vào một file tạm thời
-        temp_file = os.path.join(path, "temp_all_data.tsv")
-        all_data = []
-        for url in self.urls:
+        # URLs cho các file
+        urls = [
+            "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/train.txt",
+            "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/valid.txt",
+            "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/train_ind.txt",
+            "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/mytoygraph/test_ind.txt",
+        ]
+
+        # Download và load file
+        files = []
+        for url in urls:
             save_file = os.path.basename(url)
             txt_file = os.path.join(path, save_file)
             if not os.path.exists(txt_file):
-                txt_file = utils.download(url, self.path, save_file=save_file)
-            with open(txt_file, 'r') as f:
-                all_data.extend([line.strip() for line in f])
+                txt_file = utils.download(url, path, save_file=save_file)
+            files.append(txt_file)
 
-        # Ghi tất cả dữ liệu vào một file tạm
-        with open(temp_file, 'w') as f:
-            for line in all_data:
-                f.write(line + "\n")
+        # Xây dựng set cho vocab
+        entity_set = set()
+        relation_set = set()
 
-        # Sử dụng load_tsv để đọc file tạm
-        self.load_tsv(temp_file, verbose=verbose)
+        # Load triples
+        train_triplets = []
+        with open(files[0], "r") as fin:
+            for line in fin:
+                h, r, t = line.strip().split('\t')
+                train_triplets.append((h, r, t))
+                entity_set.add(h)
+                entity_set.add(t)
+                relation_set.add(r)
 
-        # Tùy chọn: Xóa file tạm sau khi load
-        os.remove(temp_file)
+        valid_triplets = []
+        with open(files[1], "r") as fin:
+            for line in fin:
+                h, r, t = line.strip().split('\t')
+                valid_triplets.append((h, r, t))
+                entity_set.add(h)
+                entity_set.add(t)
+                relation_set.add(r)
 
-    def _split_data(self, all_data):
-        # Phân chia dữ liệu (nếu cần) sau khi load
-        total_len = len(all_data)
-        train_end = len([line for line in all_data[:1].split('\n') if line])  # train.txt
-        valid_end = train_end + len([line for line in all_data[1:2].split('\n') if line])  # valid.txt
-        test_end = valid_end + len([line for line in all_data[2:4].split('\n') if line])  # train_ind.txt + test_ind.txt
+        train_ind_triplets = []
+        with open(files[2], "r") as fin:
+            for line in fin:
+                h, r, t = line.strip().split('\t')
+                train_ind_triplets.append((h, r, t))
+                entity_set.add(h)
+                entity_set.add(t)
+                relation_set.add(r)
 
-        self.train = all_data[:train_end]
-        self.valid = all_data[train_end:valid_end]
-        self.test = all_data[valid_end:test_end]
+        test_ind_triplets = []
+        with open(files[3], "r") as fin:
+            for line in fin:
+                h, r, t = line.strip().split('\t')
+                test_ind_triplets.append((h, r, t))
+                entity_set.add(h)
+                entity_set.add(t)
+                relation_set.add(r)
+
+        # Gộp train = train + train_ind
+        train_triplets += train_ind_triplets
+
+        # num_samples
+        self.num_samples = [len(train_triplets), len(valid_triplets), len(test_ind_triplets)]
+
+        # Xây dựng vocab
+        entity_vocab = list(entity_set)
+        relation_vocab = list(relation_set)
+        entity_to_id = {entity: idx for idx, entity in enumerate(entity_vocab)}
+        relation_to_id = {relation: idx for idx, relation in enumerate(relation_vocab)}
+
+        # Chuyển tất cả triples thành tensor
+        all_triplets_list = train_triplets + valid_triplets + test_ind_triplets
+        triplets = []
+        for h, r, t in all_triplets_list:
+            triplets.append([entity_to_id[h], entity_to_id[t], relation_to_id[r]])  # h, t, r
+        triplets = torch.tensor(triplets)
+
+        # Load
+        self.load_triplet(triplets, entity_vocab=entity_vocab, relation_vocab=relation_vocab)
+
+    def split(self):
+        offset = 0
+        splits = []
+        for num_sample in self.num_samples:
+            split = torch.utils.data.Subset(self, range(offset, offset + num_sample))
+            offset += num_sample
+            splits.append(split)
+        return splits
