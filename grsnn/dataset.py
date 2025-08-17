@@ -354,59 +354,24 @@ class OGBLBioKG(data.KnowledgeGraphDataset):
         return splits
 
 
+import os
+from torchdrug import core as R
+from torchdrug import datasets
+
 @R.register("datasets.MyToyGraph")
-class MyToyGraph(torch_data.Dataset):
-    def __init__(self, path="./datasets/mytoygraph/", **kwargs):
-        super(MyToyGraph, self).__init__()
+class MyToyGraph(datasets.KnowledgeGraphDataset):
+    def __init__(self, path="./datasets/mytoygraph/", verbose=1):
+        path = os.path.expanduser(path)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        self.path = path
 
-        # Nếu có file triples.txt thì load ở đây
-        triples_file = os.path.join(path, "triples.txt")
+        train_file = os.path.join(path, "train.txt")
+        valid_file = os.path.join(path, "valid.txt")
+        test_file  = os.path.join(path, "test.txt")
 
-        if os.path.exists(triples_file):
-            triples = []
-            with open(triples_file, "r") as f:
-                for line in f:
-                    h, r, t = line.strip().split()
-                    triples.append((h, r, t))
-        else:
-            # Nếu không có file thì dùng dữ liệu mẫu
-            triples = [
-                ("Alice", "friend_of", "Bob"),
-                ("Bob", "friend_of", "Charlie"),
-                ("Alice", "works_at", "CompanyX"),
-                ("Charlie", "works_at", "CompanyY"),
-                ("CompanyX", "has_part", "Part1"),
-            ]
+        if not (os.path.exists(train_file) and os.path.exists(valid_file) and os.path.exists(test_file)):
+            raise FileNotFoundError(f"train/valid/test files not found in {path}")
 
-        # ánh xạ entity / relation sang ID
-        self.entities = {}
-        self.relations = {}
-        triple_ids = []
-
-        for h, r, t in triples:
-            if h not in self.entities:
-                self.entities[h] = len(self.entities)
-            if t not in self.entities:
-                self.entities[t] = len(self.entities)
-            if r not in self.relations:
-                self.relations[r] = len(self.relations)
-            triple_ids.append(
-                (self.entities[h], self.relations[r], self.entities[t])
-            )
-
-        self.triples = torch.tensor(triple_ids, dtype=torch.long)
-
-    def __len__(self):
-        return len(self.triples)
-
-    def __getitem__(self, index):
-        return self.triples[index]
-
-    def split(self, ratios=(70, 15, 15)):
-        length = len(self)
-        norm = sum(ratios)
-        lengths = [int(r / norm * length) for r in ratios]
-        lengths[-1] = length - sum(lengths[:-1])
-
-        g = torch.Generator().manual_seed(0)
-        return torch_data.random_split(self, lengths, generator=g)
+        # load chuẩn knowledge graph
+        self.load_files(train_file, valid_file, test_file, verbose=verbose)
