@@ -1,2 +1,2 @@
-Alice    friend    Carol
-Bob      likes     Pizza
+alice	related_to	charlie
+bob	related_to	drama

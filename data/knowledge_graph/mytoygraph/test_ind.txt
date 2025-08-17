@@ -1,2 +1,4 @@
-Dave     friend    Frank
-Frank    likes     Pizza
+frank	instance_of	drama
+frank	related_to	bob
+grace	instance_of	drama
+grace	related_to	charlie

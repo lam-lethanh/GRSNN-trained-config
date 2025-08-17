@@ -1,2 +1,4 @@
-Dave     friend    Eva
-Eva      likes     Sushi
+alice	related_to	bob
+charlie	related_to	drama
+david	instance_of	drama
+eva	instance_of	drama
