@@ -1,4 +1,4 @@
-bob	likes	alice
-carol	colleague	bob
-eve	friend	alice
-frank	parent	carol
+helen	friend	ivan
+ivan	likes	jane
+jane	colleague	helen
+kate	parent	helen
