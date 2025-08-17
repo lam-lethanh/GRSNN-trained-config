@@ -91,6 +91,7 @@ class Engine(core.Configurable):
             # TODO: more elegant implementation
             # handle dynamic parameters in optimizer
             old_params = list(task.parameters())
+            print(f"train_set size: {len(train_set)}, valid_set.indices: {valid_set.indices}")
             result = task.preprocess(train_set, valid_set, test_set)
             if result is not None:
                 train_set, valid_set, test_set = result
