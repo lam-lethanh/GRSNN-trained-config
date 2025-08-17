@@ -353,25 +353,31 @@ class OGBLBioKG(data.KnowledgeGraphDataset):
             neg_offset += num_sample_with_neg
         return splits
 
-
-import os
-from torchdrug import core as R
-from torchdrug import datasets
-
 @R.register("datasets.MyToyGraph")
 class MyToyGraph(datasets.KnowledgeGraphDataset):
+    urls = {
+        "train": "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/FB15k237/train.txt",
+        "valid": "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/FB15k237/valid.txt",
+        "test":  "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/FB15k237/test.txt",
+    }
+
     def __init__(self, path="./datasets/mytoygraph/", verbose=1):
         path = os.path.expanduser(path)
         if not os.path.exists(path):
             os.makedirs(path)
         self.path = path
 
-        train_file = os.path.join(path, "train.txt")
-        valid_file = os.path.join(path, "valid.txt")
-        test_file  = os.path.join(path, "test.txt")
+        # check local files
+        files = {}
+        for split, url in self.urls.items():
+            file_path = os.path.join(path, f"{split}.txt")
+            if not os.path.exists(file_path):
+                # download nếu chưa có
+                save_file = f"{split}.txt"
+                file_path = utils.download(url, self.path, save_file=save_file)
+            files[split] = file_path
 
-        if not (os.path.exists(train_file) and os.path.exists(valid_file) and os.path.exists(test_file)):
-            raise FileNotFoundError(f"train/valid/test files not found in {path}")
+        train_file, valid_file, test_file = files["train"], files["valid"], files["test"]
 
-        # load chuẩn knowledge graph
+        # load vào dataset knowledge graph chuẩn
         self.load_files(train_file, valid_file, test_file, verbose=verbose)
