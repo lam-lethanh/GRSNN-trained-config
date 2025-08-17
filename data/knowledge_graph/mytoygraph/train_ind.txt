@@ -1,5 +1,3 @@
-victor	friend	wendy
-wendy	friend	xander
-xander	friend	yara
-yara	friend	zack
-zack	friend	alice
+trent   likes    wendy
+victor  likes    alice
+wendy   likes    bob
