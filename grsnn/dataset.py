@@ -357,12 +357,12 @@ class OGBLBioKG(data.KnowledgeGraphDataset):
 class MyToyGraphInductive(InductiveKnowledgeGraphDataset):
 
     train_urls = [
-        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/MyToyGraph/train.txt",
-        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/MyToyGraph/valid.txt",
+        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/FB15k237/train.txt",
+        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/FB15k237/valid.txt",
     ]
 
     test_urls = [
-        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/MyToyGraph/test.txt",
+        "https://github.com/lam-lethanh/GRSNN-trained/raw/main/data/knowledge_graph/FB15k237/test.txt",
     ]
 
     def __init__(self, path="./datasets/mytoygraph/", version="v1", verbose=1):
