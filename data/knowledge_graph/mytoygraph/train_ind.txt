@@ -1,0 +1,2 @@
+Dave     friend    Eva
+Eva      likes     Sushi
