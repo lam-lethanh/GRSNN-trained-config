@@ -1,3 +1,6 @@
-trent   likes    wendy
-victor  likes    alice
-wendy   likes    bob
+alice	friend	carol
+bob	colleague	eve
+dave	likes	alice
+carol	parent	bob
+frank	likes	grace
+grace	friend	alice

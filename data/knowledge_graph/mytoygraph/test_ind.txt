@@ -1,3 +1,6 @@
-alice   likes    eve
-bob     likes    frank
-carol   likes    grace
+eve	colleague	carol
+alice	likes	dave
+bob	friend	eve
+dave	parent	carol
+frank	friend	eve
+grace	likes	bob

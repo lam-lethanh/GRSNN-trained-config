@@ -1,10 +1,4 @@
-eve     likes    grace
-frank   likes    heidi
-grace   likes    ivan
-heidi   likes    judy
-ivan    likes    mallory
-judy    likes    oscar
-mallory likes    peggy
-oscar   likes    sybil
-peggy   likes    trent
-sybil   likes    victor
+bob	likes	alice
+carol	colleague	bob
+eve	friend	alice
+frank	parent	carol
