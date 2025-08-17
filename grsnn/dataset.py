@@ -352,3 +352,61 @@ class OGBLBioKG(data.KnowledgeGraphDataset):
             offset += num_sample
             neg_offset += num_sample_with_neg
         return splits
+
+
+@R.register("datasets.MyToyGraph")
+class MyToyGraph(torch_data.Dataset):
+    def __init__(self, path="./datasets/mytoygraph/", **kwargs):
+        super(MyToyGraph, self).__init__()
+
+        # Nếu có file triples.txt thì load ở đây
+        triples_file = os.path.join(path, "triples.txt")
+
+        if os.path.exists(triples_file):
+            triples = []
+            with open(triples_file, "r") as f:
+                for line in f:
+                    h, r, t = line.strip().split()
+                    triples.append((h, r, t))
+        else:
+            # Nếu không có file thì dùng dữ liệu mẫu
+            triples = [
+                ("Alice", "friend_of", "Bob"),
+                ("Bob", "friend_of", "Charlie"),
+                ("Alice", "works_at", "CompanyX"),
+                ("Charlie", "works_at", "CompanyY"),
+                ("CompanyX", "has_part", "Part1"),
+            ]
+
+        # ánh xạ entity / relation sang ID
+        self.entities = {}
+        self.relations = {}
+        triple_ids = []
+
+        for h, r, t in triples:
+            if h not in self.entities:
+                self.entities[h] = len(self.entities)
+            if t not in self.entities:
+                self.entities[t] = len(self.entities)
+            if r not in self.relations:
+                self.relations[r] = len(self.relations)
+            triple_ids.append(
+                (self.entities[h], self.relations[r], self.entities[t])
+            )
+
+        self.triples = torch.tensor(triple_ids, dtype=torch.long)
+
+    def __len__(self):
+        return len(self.triples)
+
+    def __getitem__(self, index):
+        return self.triples[index]
+
+    def split(self, ratios=(70, 15, 15)):
+        length = len(self)
+        norm = sum(ratios)
+        lengths = [int(r / norm * length) for r in ratios]
+        lengths[-1] = length - sum(lengths[:-1])
+
+        g = torch.Generator().manual_seed(0)
+        return torch_data.random_split(self, lengths, generator=g)
