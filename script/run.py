@@ -27,7 +27,7 @@ def train_and_validate(cfg, solver, checkpoint=None):
 
     for i in range(0, cfg.train.num_epoch, step):
         kwargs = cfg.train.copy()
-        kwargs["num_epoch"] = min(step, cfg.train.num_epoch - i)
+        kwargs["num_epoch"] = 1
         solver.model.split = "train"
         solver.train(**kwargs)
         solver.save("model_epoch_%d.pth" % solver.epoch)
