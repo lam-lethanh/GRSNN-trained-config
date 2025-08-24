@@ -2,7 +2,6 @@ import math
 
 import torch
 from torch.nn import functional as F
-from torchdrug.layers.functional import _size_to_index
 
 from torch.utils import data as torch_data
 
