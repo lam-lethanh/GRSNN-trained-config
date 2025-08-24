@@ -84,6 +84,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="yaml configuration file", required=True)
     parser.add_argument("-s", "--seed", help="random seed for PyTorch", type=int, default=2023)
+    # Add load Checkpoint
+    parser.add_argument("--checkpoint", help="checkpoint to load", type=str)
 
     args, unparsed = parser.parse_known_args()
     # get dynamic arguments defined in the config file

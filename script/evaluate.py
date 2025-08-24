@@ -31,4 +31,13 @@ if __name__ == "__main__":
     dataset = core.Configurable.load_config_dict(cfg.dataset)
     solver = util.build_solver(cfg, dataset)
 
+        
+    # Add checkpoint loading
+    if hasattr(args, "checkpoint"):
+        solver.load(args.checkpoint)
+        logger.warning(f"Loaded checkpoint from {args.checkpoint}")
+    else:
+        logger.warning("No checkpoint specified, using initial model")
+
+
     test(cfg, solver)
